@@ -25,25 +25,15 @@ struct dictionary_struct {
     int count;
 };
 
-int hash(char *key) {
-    
-    int idx = 0;
-    
-    for (int i=0; i<strlen(key); i++) {
-        idx ^= (idx << 5) + (idx >> 2) + key[i];
-    }
-    return idx%32000;
-}
-
 Dictionary *create() {
     Dictionary *newDict = (Dictionary *)malloc(sizeof(Dictionary));
     newDict->items = malloc(32000*sizeof(NODE *));
     return newDict;
 }
 
-void store(Dictionary *dict, char *key, void *val) {
+void store(Dictionary *dict, char *key, void *val, int (*hashPtr)(char *)) {
     
-    int hval = hash(key);
+    int hval = (*hashPtr)(key);
     
     if (dict->items[hval] == NULL) {
         
@@ -81,9 +71,9 @@ void store(Dictionary *dict, char *key, void *val) {
     }
 }
 
-void delete(Dictionary *dict, char *key) {
+void delete(Dictionary *dict, char *key, int (*hashPtr)(char *)) {
     
-    int hval = hash(key);
+    int hval = (*hashPtr)(key);
     
     NODE *item = dict->items[hval];
     NODE *previtem = NULL;
@@ -118,9 +108,9 @@ void delete(Dictionary *dict, char *key) {
     }
 }
 
-void *lookup(Dictionary *dict, char *key) {
+void *lookup(Dictionary *dict, char *key, int (*hashPtr)(char *)) {
     
-    int hval = hash(key);
+    int hval = (*hashPtr)(key);
     
     NODE *item = dict->items[hval];
     while (item!=NULL) {

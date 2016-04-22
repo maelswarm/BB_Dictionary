@@ -12,6 +12,16 @@
 
 #include "BB_Dictionary.h"
 
+int hash(char *key) {
+    
+    int idx = 0;
+    
+    for (int i=0; i<strlen(key); i++) {
+        idx ^= (idx << 5) + (idx >> 2) + key[i];
+    }
+    return idx%32000;
+}
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     Dictionary *myDict = create();
@@ -25,19 +35,19 @@ int main(int argc, const char * argv[]) {
     char *c = (char *)malloc(sizeof(char)*7);
     strcpy(c, "cherry");
     
-    store(myDict, "ab", a);
-    store(myDict, "ab", b);
-    store(myDict, "ba", c);
+    store(myDict, "ab", a, hash);
+    store(myDict, "ab", b, hash);
+    store(myDict, "ba", c, hash);
     
-    printf("%s\n", lookup(myDict, "ab"));
+    printf("%s\n", lookup(myDict, "ab", hash));
     
-    delete(myDict, "ab");
+    delete(myDict, "ab", hash);
     
-    store(myDict, "ab", a);
+    store(myDict, "ab", a, hash);
     
-    printf("%s\n", lookup(myDict, "ab"));
+    printf("%s\n", lookup(myDict, "ab", hash));
     
-    if (lookup(myDict, "ab")==NULL) {
+    if (lookup(myDict, "ab", hash)==NULL) {
         printf("success!\n");
     }
     

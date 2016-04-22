@@ -15,11 +15,11 @@ typedef struct dictionary_struct Dictionary;
 
 Dictionary *create();
 
-void store(Dictionary *dict, char *key, void *val);
+void store(Dictionary *dict, char *key, void *val, int (*hashPtr)(char *));
 
-void *lookup(Dictionary *dict, char *key);
+void *lookup(Dictionary *dict, char *key, int (*hashPtr)(char *));
 
-void delete(Dictionary *dict, char *key);
+void delete(Dictionary *dict, char *key, int (*hashPtr)(char *));
 
 void clean(Dictionary *dict);
 
