@@ -30,9 +30,7 @@ int hash(char *key) {
     int idx = 0;
     
     for (int i=0; i<strlen(key); i++) {
-        idx += (key[i]-97)*26;
         idx ^= (idx << 5) + (idx >> 2) + key[i];
-        
     }
     return idx%32000;
 }
@@ -46,7 +44,7 @@ Dictionary *create() {
 void store(Dictionary *dict, char *key, void *val) {
     
     int hval = hash(key);
-    printf("%i hval\n", hval);
+    
     if (dict->items[hval] == NULL) {
         
         NODE *newN = (NODE *)malloc(sizeof(NODE));
