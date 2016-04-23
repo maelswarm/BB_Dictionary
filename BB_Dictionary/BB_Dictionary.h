@@ -21,6 +21,8 @@ void *lookup(Dictionary *dict, char *key, int (*hashPtr)(char *));
 
 void delete(Dictionary *dict, char *key, int (*hashPtr)(char *));
 
-void clean(Dictionary *dict);
+int greatest_num_collisions(Dictionary *dict);
+
+void clear_dict(Dictionary *dict);
 
 #endif /* BB_Dictionary_h */

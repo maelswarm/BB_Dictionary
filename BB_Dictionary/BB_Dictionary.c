@@ -38,7 +38,9 @@ void store(Dictionary *dict, char *key, void *val, int (*hashPtr)(char *)) {
     if (dict->items[hval] == NULL) {
         
         NODE *newN = (NODE *)malloc(sizeof(NODE));
-        newN->key = key;
+        char *tmpkey = malloc(sizeof(char)*strlen(key));
+        strcpy(tmpkey, key);
+        newN->key = tmpkey;
         newN->value = val;
         newN->next = NULL;
         newN->prev = NULL;
@@ -63,7 +65,9 @@ void store(Dictionary *dict, char *key, void *val, int (*hashPtr)(char *)) {
         }
         
         NODE *newN = (NODE *)malloc(sizeof(NODE));
-        newN->key = key;
+        char *tmpkey = malloc(sizeof(char)*strlen(key));
+        strcpy(tmpkey, key);
+        newN->key = tmpkey;
         newN->value = val;
         newN->next = NULL;
         newN->prev = prevtmp;
@@ -83,21 +87,25 @@ void delete(Dictionary *dict, char *key, int (*hashPtr)(char *)) {
                 previtem->next = item->next;
                 item->next->prev = previtem;
                 free(item->value);
+                free(item->key);
                 free(item);
             }
             if (previtem != NULL && item->next == NULL) {
                 free(item->value);
+                free(item->key);
                 free(item);
                 previtem->next = NULL;
             }
             if (previtem == NULL && item->next != NULL) {
                 NODE *tmp = item->next;
                 free(item->value);
+                free(item->key);
                 free(item);
                 dict->items[hval] = tmp;
             }
             if (previtem == NULL && item->next == NULL) {
                 free(item->value);
+                free(item->key);
                 free(item);
                 dict->items[hval] = NULL;
             }
@@ -111,7 +119,7 @@ void delete(Dictionary *dict, char *key, int (*hashPtr)(char *)) {
 void *lookup(Dictionary *dict, char *key, int (*hashPtr)(char *)) {
     
     int hval = (*hashPtr)(key);
-    
+
     NODE *item = dict->items[hval];
     while (item!=NULL) {
         if (!strcmp(item->key, key)) {
@@ -129,16 +137,35 @@ void clean_node(NODE *n) {
     if (n->value != NULL) {
         free(n->value);
     }
+    if (n->key != NULL) {
+        free(n->key);
+    }
     if (n != NULL) {
         free(n);
     }
 }
 
-void clean(Dictionary *dict) {
+void clear_dict(Dictionary *dict) {
     for (int i=0; i<32000; i++) {
         if (dict->items[i]!=NULL) {
             clean_node(dict->items[i]);
         }
     }
     //free(dict->items);
+}
+
+int greatest_num_collisions(Dictionary *dict) {
+    int max = 0;
+    for (int i = 0; i<32000; i++) {
+        int x = 0;
+        NODE *tmp = dict->items[i];
+        while (tmp != NULL) {
+            x++;
+            tmp = tmp->next;
+        }
+        if (x>max) {
+            max = x;
+        }
+    }
+    return max;
 }
