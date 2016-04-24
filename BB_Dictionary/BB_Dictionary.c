@@ -25,9 +25,9 @@ struct dictionary_struct {
     int count;
 };
 
-Dictionary *create() {
+Dictionary *create(int size) {
     Dictionary *newDict = (Dictionary *)malloc(sizeof(Dictionary));
-    newDict->items = malloc(32000*sizeof(NODE *));
+    newDict->items = malloc(size*sizeof(NODE *));
     return newDict;
 }
 
@@ -119,7 +119,7 @@ void delete(Dictionary *dict, char *key, int (*hashPtr)(char *)) {
 void *lookup(Dictionary *dict, char *key, int (*hashPtr)(char *)) {
     
     int hval = (*hashPtr)(key);
-
+    
     NODE *item = dict->items[hval];
     while (item!=NULL) {
         if (!strcmp(item->key, key)) {

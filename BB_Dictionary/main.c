@@ -12,6 +12,8 @@
 
 #include "BB_Dictionary.h"
 
+#define SIZE 32000
+
 char *token = (char *)NULL;
 
 int hash(char *key) {
@@ -22,7 +24,7 @@ int hash(char *key) {
         idx ^= (idx << 5) + (idx >> 2) + key[i];
         //idx +=key[i]*26;
     }
-    return idx%32000;
+    return idx%SIZE;
 }
 
 int main(int argc, const char * argv[]) {
@@ -34,7 +36,7 @@ int main(int argc, const char * argv[]) {
         return 0;
     }
     
-    Dictionary *myDict = create();
+    Dictionary *myDict = create(SIZE);
     
     char buf[1000];
     while (fgets(buf,1000, wordsfd)!=NULL) {
@@ -64,6 +66,11 @@ int main(int argc, const char * argv[]) {
 //    store(myDict, "ba", b, hash);
 //    store(myDict, "abb", c, hash);
 //    
+//    printf("%s\n", lookup(myDict, "ab", hash));
+//    printf("%s\n", lookup(myDict, "ba", hash));
+//    printf("%s\n", lookup(myDict, "abb", hash));
+//    
+//    delete(myDict, "ab", hash);
 //    printf("%s\n", lookup(myDict, "ab", hash));
 //    printf("%s\n", lookup(myDict, "ba", hash));
 //    printf("%s\n", lookup(myDict, "abb", hash));

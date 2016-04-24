@@ -13,7 +13,7 @@
 
 typedef struct dictionary_struct Dictionary;
 
-Dictionary *create();
+Dictionary *create(int size);
 
 void store(Dictionary *dict, char *key, void *val, int (*hashPtr)(char *));
 
