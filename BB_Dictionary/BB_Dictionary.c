@@ -27,7 +27,7 @@ struct dictionary_struct {
 
 Dictionary *create(int size) {
     Dictionary *newDict = (Dictionary *)malloc(sizeof(Dictionary));
-    newDict->items = malloc(size*sizeof(NODE *));
+    newDict->items = calloc(size, sizeof(NODE *));
     return newDict;
 }
 
