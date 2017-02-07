@@ -44,7 +44,7 @@ int main(int argc, const char * argv[]) {
         token = strtok(buf, t);
         
         for(int i=0; token!=NULL; i++) {
-            char *c = (char *)malloc(sizeof(char)*strlen(token));
+            char *c = (char *)malloc(sizeof(char)*(strlen(token) + 1));
             strcpy(c, token);
             //printf("%s", token);
             store(myDict, token, c, hash);

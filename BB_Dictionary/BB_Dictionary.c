@@ -38,7 +38,7 @@ void store(Dictionary *dict, char *key, void *val, int (*hashPtr)(char *)) {
     if (dict->items[hval] == NULL) {
         
         NODE *newN = (NODE *)malloc(sizeof(NODE));
-        char *tmpkey = malloc(sizeof(char)*strlen(key));
+        char *tmpkey = malloc(sizeof(char)*(strlen(key) + 1));
         strcpy(tmpkey, key);
         newN->key = tmpkey;
         newN->value = val;
