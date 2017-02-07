@@ -40,7 +40,7 @@ int main(int argc, const char * argv[]) {
     
     char buf[1000];
     while (fgets(buf,1000, wordsfd)!=NULL) {
-        const char t[2] = " \n";
+        const char t[3] = " \n";
         token = strtok(buf, t);
         
         for(int i=0; token!=NULL; i++) {
